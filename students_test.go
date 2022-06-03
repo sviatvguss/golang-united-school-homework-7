@@ -1,6 +1,7 @@
 package coverage
 
 import (
+	"github.com/stretchr/testify/assert"
 	"os"
 	"strconv"
 	"testing"
@@ -90,4 +91,25 @@ func TestMatrix(t *testing.T) {
 		require.True(t, ok)
 		require.Equal(t, m.Rows()[2][3], 111)
 	})
+
+	strMatrix = `5 6 0
+3 4
+12 3 4`
+	m, err = New(strMatrix)
+	if err != nil {
+		t.Run("matrix rows != cols", func(t *testing.T) {
+			assert.EqualError(t, err, "Rows need to be the same length")
+		})
+	}
+
+	strMatrix = `5 6 0
+3 b 7
+12 3 4`
+	m, err = New(strMatrix)
+	if err != nil {
+		t.Run("matrix wrong format (not number)", func(t *testing.T) {
+			assert.EqualError(t, err, "strconv.Atoi: parsing \"b\": invalid syntax")
+		})
+	}
+
 }
