@@ -32,7 +32,7 @@ func TestPeople(t *testing.T) {
 	}
 
 	t.Run("Len", func(t *testing.T) {
-		require.Equal(t, 3, len(p))
+		require.Equal(t, 3, p.Len())
 	})
 
 	t.Run("Less", func(t *testing.T) {
@@ -40,6 +40,13 @@ func TestPeople(t *testing.T) {
 		require.True(t, ok)
 
 		ok = p.Less(2, 1)
+		require.False(t, ok)
+
+		p[2].birthDay = time.Now().AddDate(0, 0, 1)
+		ok = p.Less(2, 1)
+		require.True(t, ok)
+
+		ok = p.Less(2, 2)
 		require.False(t, ok)
 	})
 
